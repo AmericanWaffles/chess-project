@@ -120,61 +120,54 @@ void copyBoard(piece* board[8][8], piece* newBoard[8][8]) {
 
 int scorePosition(piece* board[8][8]) {
     int score = 0;
-    pieceMove blackKingPos, whiteKingPos;
-    for(int i = 0; i < 8; i++)
-        for(int j = 0; j < 8; j++) {
-            if(board[i][j]->color == 0 && board[i][j]->type == pieceTypes.king) {
-                blackKingPos.originX = j;
-                blackKingPos.originY = i;
-            } else if(board[i][j]->color == 1 && board[i][j]->type == pieceTypes.king) {
-                whiteKingPos.originX = j;
-                whiteKingPos.originY = i;
-            }
-        }
     for(int i = 0; i < 8; i++)
         for(int j = 0; j < 8; j++) {
             if (board[i][j]->color == 0) {
-                score -= sqrt(pow((i-whiteKingPos.originY), 2) + pow((j-whiteKingPos.originX), 2));
+                // score += sqrt(pow((i-whiteKingPos.originY), 2) + pow((j-whiteKingPos.originX), 2));
+                score -= i;
                 switch(board[i][j]->type) {
                     case pieceTypes.pawn:
-                        score -= 1;
+                        score -= 10;
                         break;
                     case pieceTypes.knight:
-                        score -= 3;
+                        score -= 30;
                         break;
                     case pieceTypes.bishop:
-                        score -= 3;
+                        score -= 30;
                         break;
                     case pieceTypes.rook:
-                        score -= 5;
+                        score -= 50;
                         break;
                     case pieceTypes.queen:
-                        score -= 9;
+                        score -= 90;
                         break;
                     case pieceTypes.king:
-                        score -= 900;
+                        score -= 9000000;
+                        score += 90*i;
                         break;
                 }
             } else if (board[i][j]->color == 1) {
-                score += sqrt(pow((i-blackKingPos.originY), 2) + pow((j-blackKingPos.originX), 2));
+                // score -= sqrt(pow((i-blackKingPos.originY), 2) + pow((j-blackKingPos.originX), 2));
+                score += (7-i);
                 switch(board[i][j]->type) {
                     case pieceTypes.pawn:
-                        score += 1;
+                        score += 10;
                         break;
                     case pieceTypes.knight:
-                        score += 3;
+                        score += 30;
                         break;
                     case pieceTypes.bishop:
-                        score += 3;
+                        score += 30;
                         break;
                     case pieceTypes.rook:
-                        score += 5;
+                        score += 50;
                         break;
                     case pieceTypes.queen:
-                        score += 9;
+                        score += 90;
                         break;
                     case pieceTypes.king:
-                        score += 900;
+                        score += 9000000;
+                        score -= 90*(7-i);
                         break;
                 }
             }

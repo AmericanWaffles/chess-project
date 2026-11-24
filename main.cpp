@@ -4,7 +4,7 @@ int main() {
     defaultBoard(board);
     printBoard(board);
     cout << endl;
-    for(int i = 0; i < 30; i++) {
+    for(int i = 0; i < 300; i++) {
         pieceMove m;
         moveAndScore a;
         a.m = m;
@@ -21,7 +21,7 @@ int main() {
 }
 
 moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta) {
-    if(depth == 5) {
+    if(depth == 4) {
         moveAndScore best;
         best.m = last;
         best.score = scorePosition(board);
@@ -44,8 +44,8 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
             best = (best.score > value.score ? best : value);
             best.m = (best.score > value.score ? best.m : m);
             alpha = (alpha.score > best.score ? alpha : best);
-            if(beta.score <= alpha.score)
-                break;
+            // if(beta.score <= alpha.score)
+            //     break;
         }
         return best;
 
@@ -66,8 +66,8 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
             best = (best.score < value.score ? best : value);
             best.m = (best.score < value.score ? best.m : m);
             beta = (beta.score < best.score ? beta : best);
-            if(beta.score <= alpha.score)
-                break;
+            // if(beta.score <= alpha.score)
+            //     break;
         }
         return best;
     }
