@@ -44,8 +44,8 @@ void defaultBoard(piece* board[8][8]) { //resets the board back to the starting 
             }
             if(i == 1) {
                 piece* pawn = new piece();
-                pawn->type = pieceTypes.empty;
-                pawn->color = 2;
+                pawn->type = pieceTypes.pawn;
+                pawn->color = 0;
                 board[i][j] = pawn;
             }
             if(i>1 && i < 6) {
@@ -88,8 +88,8 @@ void defaultBoard(piece* board[8][8]) { //resets the board back to the starting 
             }
             if(i == 6) {
                 piece* pawn = new piece();
-                pawn->type = pieceTypes.empty;
-                pawn->color = 2;
+                pawn->type = pieceTypes.pawn;
+                pawn->color = 1;
                 board[i][j] = pawn;
             }
         }
