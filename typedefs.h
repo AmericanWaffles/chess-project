@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <cmath>
 #pragma once
 using namespace std;
 constexpr struct {int pawn = 1; int knight = 2; int bishop = 3; int rook = 4; int queen = 5; int king = 6; int empty = 7;} pieceTypes;

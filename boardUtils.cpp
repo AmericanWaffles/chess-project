@@ -120,9 +120,21 @@ void copyBoard(piece* board[8][8], piece* newBoard[8][8]) {
 
 int scorePosition(piece* board[8][8]) {
     int score = 0;
+    pieceMove blackKingPos, whiteKingPos;
+    for(int i = 0; i < 8; i++)
+        for(int j = 0; j < 8; j++) {
+            if(board[i][j]->color == 0 && board[i][j]->type == pieceTypes.king) {
+                blackKingPos.originX = j;
+                blackKingPos.originY = i;
+            } else if(board[i][j]->color == 1 && board[i][j]->type == pieceTypes.king) {
+                whiteKingPos.originX = j;
+                whiteKingPos.originY = i;
+            }
+        }
     for(int i = 0; i < 8; i++)
         for(int j = 0; j < 8; j++) {
             if (board[i][j]->color == 0) {
+                score -= sqrt(pow((i-whiteKingPos.originY), 2) + pow((j-whiteKingPos.originX), 2));
                 switch(board[i][j]->type) {
                     case pieceTypes.pawn:
                         score -= 1;
@@ -144,6 +156,7 @@ int scorePosition(piece* board[8][8]) {
                         break;
                 }
             } else if (board[i][j]->color == 1) {
+                score += sqrt(pow((i-blackKingPos.originY), 2) + pow((j-blackKingPos.originX), 2));
                 switch(board[i][j]->type) {
                     case pieceTypes.pawn:
                         score += 1;

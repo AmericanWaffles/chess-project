@@ -4,16 +4,6 @@ int main() {
     defaultBoard(board);
     printBoard(board);
     cout << endl;
-    // vector<pieceMove> whiteMoves;
-    // validMoves(board, 1, whiteMoves);
-    // for(pieceMove m : whiteMoves) {
-    //     piece* newBoard[8][8];
-    //     copyBoard(board, newBoard);
-    //     cout << m.originX << "," << m.originY << "->" << m.destX << "," << m.destY << endl;
-    //     mutateBoard(newBoard, m);
-    //     printBoard(newBoard);
-    // }
-
     for(int i = 0; i < 30; i++) {
         pieceMove m;
         moveAndScore a;
@@ -31,7 +21,7 @@ int main() {
 }
 
 moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta) {
-    if(depth == 3) {
+    if(depth == 5) {
         moveAndScore best;
         best.m = last;
         best.score = scorePosition(board);
@@ -48,6 +38,9 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
             copyBoard(board, newBoard);
             mutateBoard(newBoard, m);
             moveAndScore value = minimax(newBoard, m, depth + 1, 0, alpha, beta);
+            for(int i = 0; i < 8; i++)
+                for(int j = 0; j < 8; j++)
+                    delete newBoard[i][j];
             best = (best.score > value.score ? best : value);
             best.m = (best.score > value.score ? best.m : m);
             alpha = (alpha.score > best.score ? alpha : best);
@@ -67,6 +60,9 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
             copyBoard(board, newBoard);
             mutateBoard(newBoard, m);
             moveAndScore value = minimax(newBoard, m, depth + 1, 1, alpha, beta);
+            for(int i = 0; i < 8; i++)
+                for(int j = 0; j < 8; j++)
+                    delete newBoard[i][j];
             best = (best.score < value.score ? best : value);
             best.m = (best.score < value.score ? best.m : m);
             beta = (beta.score < best.score ? beta : best);
