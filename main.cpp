@@ -31,7 +31,7 @@ int main() {
 }
 
 moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta) {
-    if(depth == 4) {
+    if(depth == 3) {
         moveAndScore best;
         best.m = last;
         best.score = scorePosition(board);
@@ -42,7 +42,7 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
         best.score = -1000000000;
 
         vector<pieceMove> moves;
-        validMoves(board, !isMaximizing, moves);
+        validMoves(board, 1, moves);
         for(pieceMove m : moves) {
             piece* newBoard[8][8];
             copyBoard(board, newBoard);
@@ -58,15 +58,15 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
 
     } else {
         moveAndScore best;
-        best.score = -1000000000;
+        best.score = 1000000000;
 
         vector<pieceMove> moves;
-        validMoves(board, !isMaximizing, moves);
+        validMoves(board, 0, moves);
         for(pieceMove m : moves) {
             piece* newBoard[8][8];
             copyBoard(board, newBoard);
             mutateBoard(newBoard, m);
-            moveAndScore value = minimax(newBoard, m, depth + 1, 0, alpha, beta);
+            moveAndScore value = minimax(newBoard, m, depth + 1, 1, alpha, beta);
             best = (best.score < value.score ? best : value);
             best.m = (best.score < value.score ? best.m : m);
             beta = (beta.score < best.score ? beta : best);

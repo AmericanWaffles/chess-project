@@ -5,30 +5,57 @@ int validMoves(piece* board[8][8], int turn, vector<pieceMove> &soFar) { //calcu
         for(int j = 0; j < 8; j++) { //each square, left to right top to bottom
             if(board[i][j]->type != pieceTypes.empty && board[i][j]->color == turn) { //this piece is the current player's
                 // cout << board[i][j]->type << endl;
-                if(board[i][j]->type == pieceTypes.pawn && i > 0) { //piece is a pawn and it's not on the end rank
-                    if(board[i-1][j]->type == pieceTypes.empty) { //pawn can advance
-                        pieceMove thisMove;
-                        thisMove.originX = j;
-                        thisMove.originY = i;
-                        thisMove.destX = j;
-                        thisMove.destY = i - 1;
-                        soFar.push_back(thisMove);
-                    }
-                    if(j > 1 && board[i-1][j-1]->type != pieceTypes.empty) { //pawn can take to the left
-                        pieceMove thisMove;
-                        thisMove.originX = j;
-                        thisMove.originY = i;
-                        thisMove.destX = j- 1;
-                        thisMove.destY = i - 1;
-                        soFar.push_back(thisMove);
-                    }
-                    if(j < 7 && board[i-1][j + 1]->type != pieceTypes.empty) { //pawn can take to the right
-                        pieceMove thisMove;
-                        thisMove.originX = j;
-                        thisMove.originY = i;
-                        thisMove.destX = j + 1;
-                        thisMove.destY = i - 1;
-                        soFar.push_back(thisMove);
+                if(board[i][j]->type == pieceTypes.pawn && i > 0 && i < 7) { //piece is a pawn and it's not on the end rank
+                    if(turn == 0) {
+                        if(board[i+1][j]->type == pieceTypes.empty) { //pawn can advance
+                            pieceMove thisMove;
+                            thisMove.originX = j;
+                            thisMove.originY = i;
+                            thisMove.destX = j;
+                            thisMove.destY = i + 1;
+                            soFar.push_back(thisMove);
+                        }
+                        if(j > 0 && board[i+1][j-1]->type != pieceTypes.empty) { //pawn can take to the left
+                            pieceMove thisMove;
+                            thisMove.originX = j;
+                            thisMove.originY = i;
+                            thisMove.destX = j - 1;
+                            thisMove.destY = i + 1;
+                            soFar.push_back(thisMove);
+                        }
+                        if(j < 7 && board[i+1][j + 1]->type != pieceTypes.empty) { //pawn can take to the right
+                            pieceMove thisMove;
+                            thisMove.originX = j;
+                            thisMove.originY = i;
+                            thisMove.destX = j + 1;
+                            thisMove.destY = i + 1;
+                            soFar.push_back(thisMove);
+                        }
+                    } else {
+                        if(board[i-1][j]->type == pieceTypes.empty) { //pawn can advance
+                            pieceMove thisMove;
+                            thisMove.originX = j;
+                            thisMove.originY = i;
+                            thisMove.destX = j;
+                            thisMove.destY = i - 1;
+                            soFar.push_back(thisMove);
+                        }
+                        if(j > 0 && board[i-1][j-1]->type != pieceTypes.empty) { //pawn can take to the left
+                            pieceMove thisMove;
+                            thisMove.originX = j;
+                            thisMove.originY = i;
+                            thisMove.destX = j - 1;
+                            thisMove.destY = i - 1;
+                            soFar.push_back(thisMove);
+                        }
+                        if(j < 7 && board[i-1][j + 1]->type != pieceTypes.empty) { //pawn can take to the right
+                            pieceMove thisMove;
+                            thisMove.originX = j;
+                            thisMove.originY = i;
+                            thisMove.destX = j + 1;
+                            thisMove.destY = i - 1;
+                            soFar.push_back(thisMove);
+                        }
                     }
                 } //end of the pawn moves. TODO: en passant and pawns that can move two squares
                 else if(board[i][j]->type == pieceTypes.rook) { //rook moves
@@ -102,7 +129,7 @@ int validMoves(piece* board[8][8], int turn, vector<pieceMove> &soFar) { //calcu
                         thisMove.destY = i-1;
                         soFar.push_back(thisMove);
                     }
-                    if(i+1 < 8 && j+2 >= 0 && board[i+1][j+2]->color!=turn) {
+                    if(i+1 < 8 && j+2 < 8 && board[i+1][j+2]->color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
@@ -134,7 +161,7 @@ int validMoves(piece* board[8][8], int turn, vector<pieceMove> &soFar) { //calcu
                         thisMove.destY = i-2;
                         soFar.push_back(thisMove);
                     }
-                    if(i+2 < 8 && j+1 >= 0 && board[i+2][j+1]->color!=turn) {
+                    if(i+2 < 8 && j+1 < 8 && board[i+2][j+1]->color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
@@ -214,7 +241,7 @@ int validMoves(piece* board[8][8], int turn, vector<pieceMove> &soFar) { //calcu
                         thisMove.destY = i-1;
                         soFar.push_back(thisMove);
                     }
-                    if(i+1 < 8 && j+1 >= 0 && board[i+1][j+1]->color!=turn) {
+                    if(i+1 < 8 && j+1 < 8 && board[i+1][j+1]->color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
@@ -226,11 +253,11 @@ int validMoves(piece* board[8][8], int turn, vector<pieceMove> &soFar) { //calcu
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
-                        thisMove.destX = j;
-                        thisMove.destY = i-1;
+                        thisMove.destX = j - 1;
+                        thisMove.destY = i;
                         soFar.push_back(thisMove);
                     }
-                    if(i < 8 && j+1 >= 0 && board[i][j+1]->color!=turn) {
+                    if(i < 8 && j+1 < 8 && board[i][j+1]->color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;

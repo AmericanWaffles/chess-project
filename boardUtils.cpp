@@ -124,21 +124,45 @@ int scorePosition(piece* board[8][8]) {
         for(int j = 0; j < 8; j++) {
             if (board[i][j]->color == 0) {
                 switch(board[i][j]->type) {
-                    case pieceTypes.pawn: score -= 1;
-                    case pieceTypes.knight: score -= 3;
-                    case pieceTypes.bishop: score -= 3;
-                    case pieceTypes.rook: score -= 5;
-                    case pieceTypes.queen: score -= 9;
-                    case pieceTypes.king: score -= 900;
+                    case pieceTypes.pawn:
+                        score -= 1;
+                        break;
+                    case pieceTypes.knight:
+                        score -= 3;
+                        break;
+                    case pieceTypes.bishop:
+                        score -= 3;
+                        break;
+                    case pieceTypes.rook:
+                        score -= 5;
+                        break;
+                    case pieceTypes.queen:
+                        score -= 9;
+                        break;
+                    case pieceTypes.king:
+                        score -= 900;
+                        break;
                 }
             } else if (board[i][j]->color == 1) {
                 switch(board[i][j]->type) {
-                    case pieceTypes.pawn: score += 1;
-                    case pieceTypes.knight: score += 3;
-                    case pieceTypes.bishop: score += 3;
-                    case pieceTypes.rook: score += 5;
-                    case pieceTypes.queen: score += 9;
-                    case pieceTypes.king: score += 900;
+                    case pieceTypes.pawn:
+                        score += 1;
+                        break;
+                    case pieceTypes.knight:
+                        score += 3;
+                        break;
+                    case pieceTypes.bishop:
+                        score += 3;
+                        break;
+                    case pieceTypes.rook:
+                        score += 5;
+                        break;
+                    case pieceTypes.queen:
+                        score += 9;
+                        break;
+                    case pieceTypes.king:
+                        score += 900;
+                        break;
                 }
             }
         }
