@@ -5,17 +5,25 @@ int main() {
     printBoard(board);
     cout << endl;
     for(int i = 0; i < 300; i++) {
-        pieceMove m;
-        moveAndScore a;
-        a.m = m;
-        a.score = -100000000;
-        moveAndScore b;
-        b.m = m;
-        b.score = 100000000;
-        moveAndScore bestMove = minimax(board, m, 0, i%2==0 ? 1 : 0, a, b);
-        mutateBoard(board, bestMove.m);
-        printBoard(board);
-        cout << endl;
+        if(1==1) {
+            pieceMove m;
+            moveAndScore a;
+            a.m = m;
+            a.score = -100000000;
+            moveAndScore b;
+            b.m = m;
+            b.score = 100000000;
+            moveAndScore bestMove = minimax(board, m, 0, i%2==0 ? 1 : 0, a, b);
+            mutateBoard(board, bestMove.m);
+            printBoard(board);
+            cout << endl;
+        } else {
+            pieceMove m;
+            cin >> m.originX >> m.originY >> m.destX >> m.destY;
+            mutateBoard(board, m);
+            printBoard(board);
+            cout << endl;
+        }
     }
     return 0;
 }

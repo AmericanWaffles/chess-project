@@ -282,6 +282,96 @@ int validMoves(piece* board[8][8], int turn, vector<pieceMove> &soFar) { //calcu
                         soFar.push_back(thisMove);
                     }
                 } //done with king moves
+                else if(board[i][j]->type == pieceTypes.queen) { //queen moves
+                    for (int k = 1; i + k < 8 && (board[i+k][j]->type==pieceTypes.empty || board[i+k][j]->color != turn); k++) {//rook moves down
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j;
+                        thisMove.destY = i + k;
+                        soFar.push_back(thisMove);
+                        if(board[i+k][j]->type!=pieceTypes.empty && board[i+k][j]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                    for (int k = 1; i - k >= 0 && (board[i-k][j]->type==pieceTypes.empty || board[i-k][j]->color != turn); k++) {//rook moves up
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j;
+                        thisMove.destY = i - k;
+                        soFar.push_back(thisMove);
+                        if(board[i-k][j]->type!=pieceTypes.empty && board[i-k][j]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                    for (int k = 1; j + k < 8 && (board[i][j+k]->type==pieceTypes.empty || board[i][j+k]->color != turn); k++) {//rook moves right
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j+k;
+                        thisMove.destY = i;
+                        soFar.push_back(thisMove);
+                        if(board[i][j+k]->type!=pieceTypes.empty && board[i][j+k]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                    for (int k = 1; j - k >= 0 && (board[i][j-k]->type==pieceTypes.empty || board[i][j-k]->color != turn); k++) {//rook moves left
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j-k;
+                        thisMove.destY = i;
+                        soFar.push_back(thisMove);
+                        if(board[i][j-k]->type!=pieceTypes.empty && board[i][j-k]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                    for (int k = 1; i + k < 8 && j + k < 8 && (board[i+k][j+k]->type==pieceTypes.empty || board[i+k][j+k]->color != turn); k++) {//bishop moves diagonally down and right
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j + k;
+                        thisMove.destY = i + k;
+                        soFar.push_back(thisMove);
+                        if(board[i+k][j+k]->type!=pieceTypes.empty && board[i+k][j+k]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                    for (int k = 1; i - k >= 0 && j - k >= 0 && (board[i-k][j-k]->type==pieceTypes.empty || board[i-k][j-k]->color != turn); k++) {//bishop moves up and left
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j - k;
+                        thisMove.destY = i - k;
+                        soFar.push_back(thisMove);
+                        if(board[i-k][j-k]->type!=pieceTypes.empty && board[i-k][j-k]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                    for (int k = 1; j + k < 8 && i - k >= 0 && (board[i-k][j+k]->type==pieceTypes.empty || board[i-k][j+k]->color != turn); k++) { //bishop makes another move
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j+k;
+                        thisMove.destY = i-k;
+                        soFar.push_back(thisMove);
+                        if(board[i-k][j+k]->type!=pieceTypes.empty && board[i-k][j+k]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                    for (int k = 1; j - k >= 0 && i + k < 8 && (board[i+k][j-k]->type==pieceTypes.empty || board[i+k][j-k]->color != turn); k++) { //bishop makes another move
+                        pieceMove thisMove;
+                        thisMove.originX = j;
+                        thisMove.originY = i;
+                        thisMove.destX = j-k;
+                        thisMove.destY = i+k;
+                        soFar.push_back(thisMove);
+                        if(board[i+k][j-k]->type!=pieceTypes.empty && board[i+k][j-k]->color != turn) { //take move
+                            break; //can't continue after capturing
+                        }
+                    }
+                } //done with queen moves
 
             }
         }
