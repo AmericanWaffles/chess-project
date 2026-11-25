@@ -1,6 +1,6 @@
 #include "typedefs.h"
 int main() {
-    piece* board[8][8];
+    piece board[8][8];
     defaultBoard(board);
     printBoard(board);
     cout << endl;
@@ -28,7 +28,7 @@ int main() {
     return 0;
 }
 
-moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta) {
+moveAndScore minimax(piece board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta) {
     if(depth == 5) {
         moveAndScore best;
         best.m = last;
@@ -42,13 +42,10 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
         vector<pieceMove> moves;
         validMoves(board, 1, moves);
         for(pieceMove m : moves) {
-            piece* newBoard[8][8];
+            piece newBoard[8][8];
             copyBoard(board, newBoard);
             mutateBoard(newBoard, m);
             moveAndScore value = minimax(newBoard, m, depth + 1, 0, alpha, beta);
-            for(int i = 0; i < 8; i++)
-                for(int j = 0; j < 8; j++)
-                    delete newBoard[i][j];
             if(value.score > best.score) {
                 best.score = value.score;
                 best.m = m;
@@ -66,13 +63,10 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
         vector<pieceMove> moves;
         validMoves(board, 0, moves);
         for(pieceMove m : moves) {
-            piece* newBoard[8][8];
+            piece newBoard[8][8];
             copyBoard(board, newBoard);
             mutateBoard(newBoard, m);
             moveAndScore value = minimax(newBoard, m, depth + 1, 1, alpha, beta);
-            for(int i = 0; i < 8; i++)
-                for(int j = 0; j < 8; j++)
-                    delete newBoard[i][j];
             if(value.score < best.score) {
                 best.score = value.score;
                 best.m = m;
