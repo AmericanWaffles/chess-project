@@ -29,7 +29,7 @@ int main() {
 }
 
 moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta) {
-    if(depth == 4) {
+    if(depth == 5) {
         moveAndScore best;
         best.m = last;
         best.score = scorePosition(board);
@@ -49,11 +49,13 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
             for(int i = 0; i < 8; i++)
                 for(int j = 0; j < 8; j++)
                     delete newBoard[i][j];
-            best = (best.score > value.score ? best : value);
-            best.m = (best.score > value.score ? best.m : m);
+            if(value.score > best.score) {
+                best.score = value.score;
+                best.m = m;
+            }
             alpha = (alpha.score > best.score ? alpha : best);
-            // if(beta.score <= alpha.score)
-            //     break;
+            if(beta.score <= alpha.score)
+                break;
         }
         return best;
 
@@ -71,11 +73,13 @@ moveAndScore minimax(piece* board[8][8], pieceMove last, int depth, int isMaximi
             for(int i = 0; i < 8; i++)
                 for(int j = 0; j < 8; j++)
                     delete newBoard[i][j];
-            best = (best.score < value.score ? best : value);
-            best.m = (best.score < value.score ? best.m : m);
-            beta = (beta.score < best.score ? beta : best);
-            // if(beta.score <= alpha.score)
-            //     break;
+            if(value.score < best.score) {
+                best.score = value.score;
+                best.m = m;
+            }
+            beta = (beta.score <= best.score ? beta : best);
+            if(beta.score <= alpha.score)
+                break;
         }
         return best;
     }
