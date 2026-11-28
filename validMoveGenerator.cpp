@@ -9,7 +9,7 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                 // cout << board[i][j] .type << endl;
                 if(board[i][j] .type == pieceTypes.pawn && i > 0 && i < 7) { //piece is a pawn and it's not on the end rank
                     if(turn == 0) {
-                        if(board[i+1][j] .type == pieceTypes.empty) { //pawn can advance
+                        if(board[i+1][j].type == pieceTypes.empty) { //pawn can advance
                             pieceMove thisMove;
                             thisMove.originX = j;
                             thisMove.originY = i;
@@ -17,7 +17,7 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                             thisMove.destY = i + 1;
                             moves.push_back(thisMove);
                         }
-                        if(j > 0 && board[i+1][j-1] .type != pieceTypes.empty) { //pawn can take to the left
+                        if(j > 0 && board[i+1][j-1].type != pieceTypes.empty && board[i+1][j-1].color != turn) { //pawn can take to the left
                             pieceMove thisMove;
                             thisMove.originX = j;
                             thisMove.originY = i;
@@ -25,7 +25,7 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                             thisMove.destY = i + 1;
                             captures.push_back(thisMove);
                         }
-                        if(j < 7 && board[i+1][j + 1] .type != pieceTypes.empty) { //pawn can take to the right
+                        if(j < 7 && board[i+1][j + 1].type != pieceTypes.empty && board[i+1][j + 1].color != turn) { //pawn can take to the right
                             pieceMove thisMove;
                             thisMove.originX = j;
                             thisMove.originY = i;
@@ -114,69 +114,85 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                     }
                 } //done with rook moves
                 else if(board[i][j] .type == pieceTypes.knight) { //knight moves
-                    if(i-1 >= 0 && j-2 >= 0 && board[i-1][j-2] .color!=turn) {
+                    if(i-1 >= 0 && j-2 >= 0 && board[i-1][j-2].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j-2;
                         thisMove.destY = i-1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
-                    if(i+1 < 8 && j-2 >= 0 && board[i+1][j-2] .color!=turn) {
+                    if(i+1 < 8 && j-2 >= 0 && board[i+1][j-2].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j-2;
                         thisMove.destY = i+1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
-                    if(i-1 >= 0 && j+2 < 8 && board[i-1][j+2] .color!=turn) {
+                    if(i-1 >= 0 && j+2 < 8 && board[i-1][j+2].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j+2;
                         thisMove.destY = i-1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
-                    if(i+1 < 8 && j+2 < 8 && board[i+1][j+2] .color!=turn) {
+                    if(i+1 < 8 && j+2 < 8 && board[i+1][j+2].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j+2;
                         thisMove.destY = i+1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
-                    if(i-2 >= 0 && j-1 >= 0 && board[i-2][j-1] .color!=turn) {
+                    if(i-2 >= 0 && j-1 >= 0 && board[i-2][j-1].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j-1;
                         thisMove.destY = i-2;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
-                    if(i+2 < 8 && j-1 >= 0 && board[i+2][j-1] .color!=turn) {
+                    if(i+2 < 8 && j-1 >= 0 && board[i+2][j-1].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j-1;
                         thisMove.destY = i+2;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
-                    if(i-2 >= 0 && j+1 < 8 && board[i-2][j+1] .color!=turn) {
+                    if(i-2 >= 0 && j+1 < 8 && board[i-2][j+1].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j+1;
                         thisMove.destY = i-2;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
-                    if(i+2 < 8 && j+1 < 8 && board[i+2][j+1] .color!=turn) {
+                    if(i+2 < 8 && j+1 < 8 && board[i+2][j+1].color!=turn) {
                         pieceMove thisMove;
                         thisMove.originX = j;
                         thisMove.originY = i;
                         thisMove.destX = j+1;
                         thisMove.destY = i+2;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                 } //done with knight moves
                 else if(board[i][j] .type == pieceTypes.bishop) { //bishop moves
@@ -236,7 +252,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j-1;
                         thisMove.destY = i-1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                     if(i+1 < 8 && j-1 >= 0 && board[i+1][j-1] .color!=turn) {
                         pieceMove thisMove;
@@ -244,7 +262,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j-1;
                         thisMove.destY = i+1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                     if(i-1 >= 0 && j+1 < 8 && board[i-1][j+1] .color!=turn) {
                         pieceMove thisMove;
@@ -252,7 +272,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j+1;
                         thisMove.destY = i-1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                     if(i+1 < 8 && j+1 < 8 && board[i+1][j+1] .color!=turn) {
                         pieceMove thisMove;
@@ -260,7 +282,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j+1;
                         thisMove.destY = i+1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                     if(i >= 0 && j-1 >= 0 && board[i][j-1] .color!=turn) {
                         pieceMove thisMove;
@@ -268,7 +292,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j - 1;
                         thisMove.destY = i;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                     if(i < 8 && j+1 < 8 && board[i][j+1] .color!=turn) {
                         pieceMove thisMove;
@@ -276,7 +302,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j+1;
                         thisMove.destY = i;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                     if(i-1 >= 0 && j < 8 && board[i-1][j] .color!=turn) {
                         pieceMove thisMove;
@@ -284,7 +312,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j;
                         thisMove.destY = i-1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                     if(i+1 < 8 && j >= 0 && board[i+1][j] .color!=turn) {
                         pieceMove thisMove;
@@ -292,7 +322,9 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
                         thisMove.originY = i;
                         thisMove.destX = j;
                         thisMove.destY = i+1;
-                        soFar.push_back(thisMove);
+                        if(board[thisMove.destY][thisMove.destX].type != pieceTypes.empty) {
+                            captures.push_back(thisMove);
+                        } else moves.push_back(thisMove);
                     }
                 } //done with king moves
                 else if(board[i][j] .type == pieceTypes.queen) { //queen moves
@@ -397,9 +429,11 @@ int validMoves(piece board[8][8], int turn, vector<pieceMove> &soFar) { //calcul
             }
         }
     }
-    for(pieceMove m : captures)
+    for(pieceMove m : captures) {
         soFar.push_back(m);
-    for(pieceMove m : moves)
+    }
+    for(pieceMove m : moves) {
         soFar.push_back(m);
+    }
     return 0;
 }

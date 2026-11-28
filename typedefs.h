@@ -19,3 +19,4 @@ struct moveAndScore {
     int score;
 };
 moveAndScore minimax(piece board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta);
+bool inCheck(piece board[8][8], int turn);
