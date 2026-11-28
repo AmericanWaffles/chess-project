@@ -5,6 +5,8 @@ void mutateBoard(piece board[8][8], pieceMove m) {
     board[m.destY][m.destX].color = board[m.originY][m.originX].color;
     board[m.originY][m.originX].type = pieceTypes.empty;
     board[m.originY][m.originX].color = 2;
+    if((m.destY == 0 || m.destY == 7) && board[m.destY][m.destX].type == pieceTypes.pawn)
+        board[m.destY][m.destX].type = pieceTypes.queen;
 }
 void defaultBoard(piece board[8][8]) { //resets the board back to the starting position
     for(int i = 0; i < 8; i++) {
@@ -152,30 +154,108 @@ bool inCheck(piece board[8][8], int turn) {
             }
     if(kingPosX == -1 && kingPosY == -1)
         return true;
-    
-    for(int i = kingPosY - 1; i > -1 && (board[i][kingPosX].color != turn || (board[i][kingPosX].type == pieceTypes.rook || board[i][kingPosX].type == pieceTypes.queen)); i--)
-        if(board[i][kingPosX].color != turn && (board[i][kingPosX].type == pieceTypes.rook || board[i][kingPosX].type == pieceTypes.queen))
-            return true;
-    for(int i = kingPosY + 1; i < 8 && (board[i][kingPosX].color != turn || (board[i][kingPosX].type == pieceTypes.rook || board[i][kingPosX].type == pieceTypes.queen)); i++)
-        if(board[i][kingPosX].color != turn && (board[i][kingPosX].type == pieceTypes.rook || board[i][kingPosX].type == pieceTypes.queen))
-            return true;
-    for(int j = kingPosX - 1; j > -1 && (board[kingPosY][j].color != turn || (board[kingPosY][j].type == pieceTypes.rook || board[kingPosY][j].type == pieceTypes.queen)); j--)
-        if(board[kingPosY][j].color != turn && (board[kingPosY][j].type == pieceTypes.rook || board[kingPosY][j].type == pieceTypes.queen))
-            return true;
-    for(int j = kingPosX + 1; j < 8 && (board[kingPosY][j].color != turn || (board[kingPosY][j].type == pieceTypes.rook || board[kingPosY][j].type == pieceTypes.queen)); j++)
-        if(board[kingPosY][j].color != turn && (board[kingPosY][j].type == pieceTypes.rook || board[kingPosY][j].type == pieceTypes.queen))
-            return true;
-    for(int k = 1; kingPosY - k > -1 && kingPosX - k > -1 && (board[kingPosY - k][kingPosX - k].color != turn || (board[kingPosY - k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX - k].type == pieceTypes.queen)); k++)
-        if(board[kingPosY - k][kingPosX - k].color != turn && (board[kingPosY - k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX - k].type == pieceTypes.queen))
-            return true;
-    for(int k = 1; kingPosY + k < 8 && kingPosX + k < 8 && (board[kingPosY - k][kingPosX - k].color != turn || (board[kingPosY - k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX - k].type == pieceTypes.queen)); k++)
-        if(board[kingPosY + k][kingPosX + k].color != turn && (board[kingPosY + k][kingPosX + k].type == pieceTypes.bishop || board[kingPosY + k][kingPosX + k].type == pieceTypes.queen))
-            return true;
-    for(int k = 1; kingPosY - k > -1 && kingPosX + k < 8 && (board[kingPosY - k][kingPosX - k].color != turn || (board[kingPosY - k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX - k].type == pieceTypes.queen)); k++)
-        if(board[kingPosY - k][kingPosX + k].color != turn && (board[kingPosY - k][kingPosX + k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX + k].type == pieceTypes.queen))
-            return true;
-    for(int k = 1; kingPosY + k < 8 && kingPosX - k > -1 && (board[kingPosY - k][kingPosX - k].color != turn || (board[kingPosY - k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX - k].type == pieceTypes.queen)); k++)
-        if(board[kingPosY + k][kingPosX - k].color != turn && (board[kingPosY + k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY + k][kingPosX - k].type == pieceTypes.queen))
-            return true;
+    int i;
+    for(i = kingPosY - 1; i > -1 && board[i][kingPosX].type == pieceTypes.empty; i--)
+        continue;
+    if( i > -1 && board[i][kingPosX].color != turn && (board[i][kingPosX].type == pieceTypes.rook || board[i][kingPosX].type == pieceTypes.queen))
+        return true;
+    for(i = kingPosY + 1; i < 8 && board[i][kingPosX].type == pieceTypes.empty; i++)
+        continue;
+    if(i < 8 && board[i][kingPosX].color != turn && (board[i][kingPosX].type == pieceTypes.rook || board[i][kingPosX].type == pieceTypes.queen))
+        return true;
+    int j;
+    for(j = kingPosX - 1; j > -1 && board[kingPosY][j].type == pieceTypes.empty; j--)
+        continue;
+    if(j > -1 && board[kingPosY][j].color != turn && (board[kingPosY][j].type == pieceTypes.rook || board[kingPosY][j].type == pieceTypes.queen))
+        return true;
+    for(j = kingPosX + 1; j < 8 && board[kingPosY][j].type == pieceTypes.empty; j++)
+        continue;
+    if(j < 8 && board[kingPosY][j].color != turn && (board[kingPosY][j].type == pieceTypes.rook || board[kingPosY][j].type == pieceTypes.queen))
+        return true;
+    int k;
+    for(k = 1; kingPosY - k > -1 && kingPosX - k > -1 && board[kingPosY - k][kingPosX - k].type == pieceTypes.empty; k++)
+        continue;
+    if(kingPosY - k > -1 && kingPosX - k > -1 && board[kingPosY - k][kingPosX - k].color != turn && (board[kingPosY - k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX - k].type == pieceTypes.queen))
+        return true;
+    for(k = 1; kingPosY + k < 8 && kingPosX + k < 8 && board[kingPosY + k][kingPosX + k].type == pieceTypes.empty; k++)
+        continue;
+    if(kingPosY + k < 8 && kingPosX + k < 8 && board[kingPosY + k][kingPosX + k].color != turn && (board[kingPosY + k][kingPosX + k].type == pieceTypes.bishop || board[kingPosY + k][kingPosX + k].type == pieceTypes.queen))
+        return true;
+    for(k = 1; kingPosY - k > -1 && kingPosX + k < 8 && board[kingPosY - k][kingPosX + k].type == pieceTypes.empty; k++)
+        continue;
+    if(kingPosY - k > -1 && kingPosX + k < 8 && board[kingPosY - k][kingPosX + k].color != turn && (board[kingPosY - k][kingPosX + k].type == pieceTypes.bishop || board[kingPosY - k][kingPosX + k].type == pieceTypes.queen))
+        return true;
+    for(k = 1; kingPosY + k < 8 && kingPosX - k > -1 && board[kingPosY + k][kingPosX - k].type == pieceTypes.empty; k++)
+        continue;
+    if(kingPosY + k < 8 && kingPosX - k > -1 && board[kingPosY + k][kingPosX - k].color != turn && (board[kingPosY + k][kingPosX - k].type == pieceTypes.bishop || board[kingPosY + k][kingPosX - k].type == pieceTypes.queen))
+        return true;
+
+    //knights
+    int t = kingPosY + 1;
+    int u = kingPosX + 2;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+    t = kingPosY + 2;
+    u = kingPosX + 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+    t = kingPosY - 1;
+    u = kingPosX + 2;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+    t = kingPosY - 2;
+    u = kingPosX + 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+    t = kingPosY + 1;
+    u = kingPosX - 2;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+    t = kingPosY + 2;
+    u = kingPosX - 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+    t = kingPosY - 1;
+    u = kingPosX - 2;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+    t = kingPosY - 2;
+    u = kingPosX - 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.knight && board[t][u].color != turn))
+        return true;
+
+    //king vs king
+    t = kingPosY - 1;
+    u = kingPosX - 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
+    t = kingPosY - 1;
+    u = kingPosX + 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
+    t = kingPosY + 1;
+    u = kingPosX - 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
+    t = kingPosY + 1;
+    u = kingPosX + 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
+    t = kingPosY - 1;
+    u = kingPosX;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
+    t = kingPosY + 1;
+    u = kingPosX;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
+    t = kingPosY;
+    u = kingPosX - 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
+    t = kingPosY;
+    u = kingPosX + 1;
+    if(t > -1 && t < 8 && u > -1 && u < 8 && (board[t][u].type == pieceTypes.king && board[t][u].color != turn))
+        return true;
     return false;
 }

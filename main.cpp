@@ -29,7 +29,7 @@ int main() {
 }
 
 moveAndScore minimax(piece board[8][8], pieceMove last, int depth, int isMaximizing, moveAndScore alpha, moveAndScore beta) {
-    if(depth == 7) {
+    if(depth == 6) {
         moveAndScore best;
         best.m = last;
         best.score = scorePosition(board);
